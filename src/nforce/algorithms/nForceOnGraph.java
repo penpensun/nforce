@@ -748,8 +748,6 @@ public class nForceOnGraph {
         //Assign the clusters
         assignClusters(graph);
         
-        // For test.
-        graph.writeClusterTo("./clusters_before_post.txt", true);
         System.out.println("Partitioning completed.");
         // Post-processing
         // Step 1, merge Clusters
@@ -759,8 +757,6 @@ public class nForceOnGraph {
         System.out.println("Post-processing: 2. Moving vertex. ");
         postProMove(graph);
         System.out.println("Post-processing complete.");
-        // For test
-        graph.writeClusterTo("./clusters_after_post.txt", true);
         
         
     }
@@ -849,8 +845,6 @@ public class nForceOnGraph {
         }
         // If chain-clustering, then we need to assign clusters before chainClustering and chain assigning
         assignClustersChainBeforePostPro(graph);
-        // For test.
-        graph.writeClusterTo("./clusters_before_post.txt", true);
         System.out.println("Partitioning completed.");
         // Post-processing
         // Step 1, merge Clusters

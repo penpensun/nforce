@@ -1,0 +1,15 @@
+<document>
+    <entity levels="3" externalFile="true">
+    ../../cv/entity.txt
+    </entity>
+
+<matrix matrixLevel="0 1" externalFile="true">
+../../repos/drug_gene_precluster_matrix.txt
+</matrix>
+<matrix matrixLevel="1 2" externalFile="true">
+../../repos/gene_disease_precluster_matrix.txt
+</matrix>
+<matrix matrixLevel="0 2" externalFile="true">
+../../repos/drug_disease_precluster_matrix.txt
+</matrix>
+</document>
