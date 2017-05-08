@@ -23,14 +23,17 @@ import java.io.FileWriter;
 public class Main {
     /**
      * This method calls nforce by parsing the command line.
-     * @param args 
+     * @param line The command line.
+     * @param conf The Config object.
      */
-    public void parseCommandLine(String args[]){
+    public static void parseCommandLine(String line, Config conf){
         
     }
     
     /**
      * This method calls nforce by parsing the config file.
+     * @param configFile The input config file.
+     * @param conf The Config object.
      */
     public static void parseConfigFile(String configFile){
         FileReader fr = null;
@@ -45,9 +48,9 @@ public class Main {
                 if(line.isEmpty() || line.startsWith("#"))
                     continue;
                 //Check each case:
-                if(line.startsWith("graphType = ")){
+                if(line.startsWith("graphType=")){
                     try{
-                        conf.graphType = Integer.parseInt(line.split("graphType = ")[1].trim());
+                        conf.graphType = Integer.parseInt(line.split("graphType=")[1].trim());
                     }catch(NumberFormatException e){
                         // What if the number format is wrong.
                         System.err.println(" Config file. Graph type number format error:  "+line);
@@ -61,40 +64,40 @@ public class Main {
                         System.exit(0);
                     }
                 }
-                if(line.startsWith("input = ")){
+                if(line.startsWith("input=")){
                     try{
                         //What if the input string does not exist.
-                        conf.input = String.copyValueOf(line.split("input = ")[1].trim().toCharArray());
+                        conf.input = String.copyValueOf(line.split("input=")[1].trim().toCharArray());
                     }catch(IndexOutOfBoundsException e){
                         System.err.println("Config file. Input string does not exist: "+line);
                         System.exit(0);
                     }
                 }
-                if(line.startsWith("isFormatXml = ")){
+                if(line.startsWith("isXmlFormat=")){
                     try{
-                        conf.isXmlFormat = Boolean.parseBoolean(line.split("ixFormatXml = ")[1].trim());
+                        conf.isXmlFormat = Boolean.parseBoolean(line.split("isXmlFormat=")[1].trim());
                     }catch(IndexOutOfBoundsException e){
                         System.err.println("Config file. isXmlFormat does not exists: "+line);
                         System.exit(0);
                     }
                 }
-                if(line.startsWith("hasHeader = ")){
+                if(line.startsWith("hasHeader=")){
                     try{
-                        conf.hasHeader = Boolean.parseBoolean(line.split("hasHeader = ")[1].trim());
+                        conf.hasHeader = Boolean.parseBoolean(line.split("hasHeader=")[1].trim());
                     }catch(IndexOutOfBoundsException e){
                         conf.hasHeader = false;
                     }
                 }
-                if(line.startsWith("clusterOutput = ")){
+                if(line.startsWith("clusterOutput=")){
                     try{
-                        conf.clusterOutput = String.copyValueOf(line.split("clusterOutput = ")[1].trim().toCharArray());
+                        conf.clusterOutput = String.copyValueOf(line.split("clusterOutput=")[1].trim().toCharArray());
                     }catch(IndexOutOfBoundsException e){
                         System.err.println("Config file. The given cluster output file does not exist: "+line);
                         System.exit(0);
                     }
                 }
-                if(line.startsWith("editOutput = ")){
-                    String[] splits = line.split("editOutput = ");
+                if(line.startsWith("editOutput=")){
+                    String[] splits = line.split("editOutput=");
                     if(splits.length <2)
                         conf.editOutput=  null;
                     else{
@@ -104,8 +107,8 @@ public class Main {
                             conf.editOutput = null;
                     }
                 }
-                if(line.startsWith("graphOutput = ")){
-                    String[] splits = line.split("graphOutput = ");
+                if(line.startsWith("graphOutput=")){
+                    String[] splits = line.split("graphOutput=");
                     if(splits.length <2)
                         conf.graphOutput = null;
                     else{
@@ -114,9 +117,9 @@ public class Main {
                             conf.graphOutput = null;
                     }
                 }
-                if(line.startsWith("threshold = ")){
+                if(line.startsWith("threshold=")){
                     try{
-                        String[] splits = line.split("threshold = ");
+                        String[] splits = line.split("threshold=");
                         if(splits.length <2)
                             conf.p.setThresh(Float.NaN);
                         else {
@@ -130,9 +133,9 @@ public class Main {
                         System.err.println("Config file. Illegal number format of the thresh: "+line);
                     }
                 }
-                if(line.startsWith("threshArray = ")){
+                if(line.startsWith("threshArray=")){
                     try{
-                        String[] splits = line.split("threshArray = ");
+                        String[] splits = line.split("threshArray=");
                         if(splits.length <2)
                             conf.p.setThreshArray(null);
                         else{
@@ -148,6 +151,14 @@ public class Main {
                         System.err.println("Config file. Illegal number format for thresh array:  "+line);
                     }
                 }
+                if(line.startsWith("paramFile=")){
+                    try{
+                        conf.p = new Param(String.copyValueOf(line.split("paramFile=")[1].trim().toCharArray()));
+                    }catch(IndexOutOfBoundsException e){
+                        System.err.println("Config file. The given cluster output file does not exist: "+line);
+                        System.exit(0);
+                    }
+                }
             }
             
         
@@ -157,7 +168,7 @@ public class Main {
         }
         
         // Run nforce on the graph
-        Graph resultGraph = runGraph(conf);
+        Graph resultGraph = execute(conf);
         
         // Output the results
         // Output the cluster output.
@@ -167,12 +178,27 @@ public class Main {
         if(conf.graphOutput != null)
             resultGraph.writeGraphTo(conf.graphOutput, true);
     }
+    
+    
+    public static void runConfig(Config conf){
+        // Run nforce on the graph
+        Graph resultGraph = execute(conf);
+        
+        // Output the results
+        // Output the cluster output.
+        resultGraph.writeClusterTo(conf.clusterOutput, true);
+        if(conf.editOutput != null)
+            resultGraph.writeResultInfoTo(conf.editOutput);
+        if(conf.graphOutput != null)
+            resultGraph.writeGraphTo(conf.graphOutput, true);
+    }
+    
     /**
      * This method runs nforce with the given config object.
      * @param conf
      * @return 
      */
-    public static Graph runGraph(Config conf){
+    public static Graph execute(Config conf){
         // Check the parameters.
         /* Check the parameters. */
         if(conf.p.getThreshArray() != null && !Float.isNaN(conf.p.getThresh()))
@@ -203,15 +229,25 @@ public class Main {
             throw new IllegalArgumentException(" Error! Illegal cluster output file: "+conf.clusterOutput);
         }
         // Check the graph output.
-        if(conf.graphOutput != null && 
-                !new File(conf.graphOutput).canWrite())
+        if(conf.graphOutput == null)
             throw new IllegalArgumentException(" Error! Illegal graph output file: "+conf.graphOutput);
-        
+        try{
+            FileWriter fw = new FileWriter(conf.graphOutput);
+            fw.close();
+        }catch(IOException e){
+            throw new IllegalArgumentException("Error! Illegal graph outputfile: "+conf.graphOutput);
+        }
         
         // Check the edit output.
-         if(conf.editOutput != null && 
-                !new File(conf.editOutput).canWrite())
+         if(conf.editOutput == null)
             throw new IllegalArgumentException(" Error! Illegal edit output file: "+conf.editOutput);
+         try{
+             FileWriter fw = new FileWriter(conf.editOutput);
+             fw.close();
+         }catch(IOException e){
+             throw new IllegalArgumentException("Error! Illegal edit output file:  "+conf.editOutput);
+         }
+         
          // Init the graph.
         Graph inputGraph = null;
         switch(conf.graphType){
@@ -244,9 +280,46 @@ public class Main {
         return inputGraph;
     }
 
-    
-    public static void main(String args[]){
-        String a= "5";
-        System.out.println(Integer.parseInt(a));
+    /**
+     * This method is the upper-level of execute. It controls
+     * the input and the output of the method execute.
+     * @param mode
+     * @param input 
+     */
+    public static void runGraph(int mode, String input){
+        switch(mode){
+            case 1: // Config file
+            {
+                parseConfigFile(input);
+                //execute(conf);
+                break;
+            }
+            case 2: // Command line
+            {
+                Config conf = null;
+                parseCommandLine(input,conf);
+                //execute(conf);
+                break;
+            }
+            default:
+            {
+                System.err.println("The mode is:"+mode+". Mode can only be 1 or 2");
+                return;
+            }
+        }
     }
+    
+    /**
+     * This main method.
+     * Right now just for config file.
+     * @param args 
+     */
+    public static void main(String args[]){
+        //Parse the line and input the config file.
+        parseConfigFile(args[0]);
+    }
+    
+    
+    
+   
 }

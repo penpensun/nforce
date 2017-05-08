@@ -196,6 +196,37 @@ public abstract class Graph {
     public abstract void writeResultInfoTo(String FilePath);
     
     /**
+     * This method writes the coordinates to the given file path.
+     * @param filePath 
+     */
+    public void writeCoordinates(String filePath){
+        FileWriter fw = null;
+        BufferedWriter bw = null;
+        try{
+            fw = new FileWriter(filePath);
+            bw = new BufferedWriter(fw);
+        }catch(IOException e){
+            System.err.println("writeCoordinates: File open error.");
+            System.err.println(filePath);
+            e.printStackTrace();
+        }
+        
+        try{
+            for(Vertex v: vertices){
+                float coords[] = v.getCoords();
+                for(int i=0;i<coords.length;i++)
+                    bw.write(coords[i]+"\t");
+                bw.write(v.getVtxSet()+"\t"+v.getClustNum()+"\n");   
+            }
+            bw.flush();
+            bw.close();
+            fw.close();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+    
+    /**
      * This method writes the information of vertices into the given file, used to output log file.
      * @param filePath 
      */

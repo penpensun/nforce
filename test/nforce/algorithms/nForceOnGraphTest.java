@@ -50,7 +50,7 @@ public class nForceOnGraphTest {
         conf.graphType = 1;
         float stdCost = sim.genBipartiteGraph(setSizes, bipartiteInput, mean, stdev);
         Main mainAlgor = new Main();
-        Graph resultGraph = mainAlgor.runGraph(conf);
+        Graph resultGraph = mainAlgor.execute(conf);
         assertEquals(stdCost,resultGraph.getCost(),0.01*stdCost);
         System.out.println("Bipartite graph cost: "+stdCost+" "+resultGraph.getCost());
     }
@@ -68,7 +68,7 @@ public class nForceOnGraphTest {
         conf.p = new Param(paramFile);
         conf.graphType = 1;
         Main mainAlgor = new Main();
-        Graph resultGraph = mainAlgor.runGraph(conf);
+        Graph resultGraph = mainAlgor.execute(conf);
         System.out.println("Bipartite graph cost: "+resultGraph.getCost());
     }
     
@@ -86,7 +86,7 @@ public class nForceOnGraphTest {
         conf.graphType = 4;
         float stdCost = sim.genGeneralGraph2(size, generalInput, mean, stdev);
         Main mainAlgor = new Main();
-        Graph resultGraph = mainAlgor.runGraph(conf);
+        Graph resultGraph = mainAlgor.execute(conf);
         assertEquals(stdCost,resultGraph.getCost(),0.01*stdCost);
         System.out.println("General graph costs:  "+stdCost+"  "+resultGraph.getCost());
     }
@@ -106,7 +106,7 @@ public class nForceOnGraphTest {
         conf.graphType = 2;
         float stdCost = sim.genHierGraph(setSizes, hierInput, mean, stdev);
         Main mainAlgor = new Main();
-        Graph resultGraph = mainAlgor.runGraph(conf);
+        Graph resultGraph = mainAlgor.execute(conf);
         assertEquals(stdCost,resultGraph.getCost(),0.01*stdCost);
         System.out.println("Hier graph cost: "+stdCost+" "+resultGraph.getCost());
     }
@@ -126,7 +126,7 @@ public class nForceOnGraphTest {
         conf.graphType = 3;
         float stdCost = sim.genHierGraphWIE(setSizes, hierWieInput, mean, stdev);
         Main mainAlgor = new Main();
-        Graph resultGraph = mainAlgor.runGraph(conf);
+        Graph resultGraph = mainAlgor.execute(conf);
         assertEquals(stdCost,resultGraph.getCost(),0.01*stdCost);
         System.out.println("Hier graph wie cost : "+stdCost+" "+resultGraph.getCost());
     }
@@ -146,7 +146,7 @@ public class nForceOnGraphTest {
         conf.graphType = 5;
         float stdCost = sim.genHierGraphWIE(setSizes, npartiteInput, mean, stdev);
         Main mainAlgor = new Main();
-        Graph resultGraph = mainAlgor.runGraph(conf);
+        Graph resultGraph = mainAlgor.execute(conf);
         assertEquals(stdCost,resultGraph.getCost(),0.01*stdCost);
         System.out.println("Hier graph wie cost : "+stdCost+" "+resultGraph.getCost());
     }

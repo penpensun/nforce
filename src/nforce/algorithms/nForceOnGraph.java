@@ -99,6 +99,7 @@ public class nForceOnGraph {
      * This method assigns clusters before chain clustering. 
      * @param graph 
      */
+    @Deprecated
     private void assignClustersChainBeforePostPro(Graph graph){
         int maxClusterIdx = 0;
         for(int i=0;i<graph.vertexCount();i++)
@@ -170,6 +171,7 @@ public class nForceOnGraph {
      * @param graph
      * @return 
      */
+    @Deprecated
     public float computeCostChain(Graph graph){
         float cost = 0;
         
@@ -566,6 +568,9 @@ public class nForceOnGraph {
      * @throws IOException 
      */
     public Graph run(Graph graph, Param p, int clType, boolean isMultipleThresh) throws IOException{
+        /* The coordinate file. */
+        //String coordsFile = "../coords_";
+        
         /* First we have to detract the threshold. */
         System.out.println("Detract the threshold.");
         if(!graph.isThreshDetracted()){
@@ -584,6 +589,10 @@ public class nForceOnGraph {
         2. The distance info.
         3. The edge weight info.
         */
+        /*
+        * Output the coordinates at the beginning.
+        */
+        //graph.writeCoordinates(coordsFile+"begin.txt");
         /*
         graph.writeVertexInfo(Setting.VERTEX_LOG+"_start");
         graph.writeDistanceMatrix(Setting.DIST_LOG+"_start");
@@ -610,6 +619,8 @@ public class nForceOnGraph {
                     , graph.vertexSetCount()-1);
             }
                 */
+            //if(i%20 == 0)
+                //graph.writeCoordinates(coordsFile+i+".txt");
             graph.updatePos(displace(graph,p,i));
             graph.updateDist();
             if(i % 20==0)
@@ -617,18 +628,24 @@ public class nForceOnGraph {
         }
         System.out.println("Displacement completed.");
         
-        /*Starting from the lower bound of the threshold, 
-         *until the upper bound of the threshold.We try to find the dist 
-         *threhold resulting in the smallest editing cost for test, 
+        
+        
+        /*Starting from the lower bound of the threshold,
+         *until the upper bound of the threshold.We try to find the dist
+         *threhold resulting in the smallest editing cost for test,
          *we record the best DistThr. */
-        if(clType == 1){
-            normalPartition(graph, p);
-        }
-        else if(clType == 2){
-            chainPartition(graph, p);
-        }
-        else if(clType == 3){
-            chainPartition2(graph,p);
+        switch (clType) {
+            case 1:
+                normalPartition(graph, p);
+                break;
+            case 2:
+                chainPartition(graph, p);
+                break;
+            case 3:
+                chainPartition2(graph,p);
+                break;
+            default:
+                break;
         }
         
         
@@ -650,6 +667,8 @@ public class nForceOnGraph {
             , graph.vertexSetCount()-1);
         graph.writeIntraEwMatrix(Setting.INTRA_EW_LOG+(graph.vertexSetCount()-1), graph.vertexSetCount()-1);
         */
+        /* After displacement, write coords. */
+        //graph.writeCoordinates(coordsFile+"end.txt");
         return graph;
     }
     
@@ -864,7 +883,7 @@ public class nForceOnGraph {
         
     }
     
-    
+    @Deprecated
     public void chainPartition2(Graph graph, Param p){
         System.out.println("Partition the nodes. ");
         float minCostSL = Float.MAX_VALUE;
@@ -981,6 +1000,7 @@ public class nForceOnGraph {
      * @param graph 
      * @param limitDist 
      */
+    @Deprecated
     public void chainAssign2(Graph graph, float limitDist){
         // Get the max cluster index.
         int maxClusterIdx = 0;
@@ -1123,6 +1143,7 @@ public class nForceOnGraph {
      * the vertices other than the vertices in set 0.
      * @param graph 
      */
+    @Deprecated
     public void chainAssign(Graph graph){
             
         // Assign the clust num to the vertices in other sets.
@@ -1142,6 +1163,7 @@ public class nForceOnGraph {
      * @param vertices
      * @return 
      */
+    @Deprecated
     private Vertex getFirstUnassignedChain(Graph graph, int currentClustIdx){
         Vertex firstUnassigned = null;
         // Get the first unassigned vertex in the smallest level.
@@ -1186,6 +1208,7 @@ public class nForceOnGraph {
      * @param graph
      * @param currentClustIdx 
      */
+    @Deprecated
     private Vertex getFirstUnassignedChain2(Graph graph, int currentClustIdx){
         for(Vertex vtx: graph.getVertices()){
             if(vtx.getClustNum() == -1&& vtx.getVtxSet() == 0){
@@ -1206,6 +1229,7 @@ public class nForceOnGraph {
      * @param graph
      * @param distThresh 
      */
+    @Deprecated
     private void singleLinkageClustChain2(Graph graph, float distThresh){
         // For test
         try{
@@ -1248,7 +1272,7 @@ public class nForceOnGraph {
                 }
             }
            
-            testWriteSlClusters(forTest,currentClustIdx,"./test_sl_clusters.txt");
+            //testWriteSlClusters(forTest,currentClustIdx,"./test_sl_clusters.txt");
             forTest.clear();
             currentClustIdx++;
         }
@@ -1358,6 +1382,7 @@ public class nForceOnGraph {
      * @param graph
      * @param distThresh 
      */
+    @Deprecated
     public void completeLinkageClustChain(Graph graph, float distThresh){
         ArrayList<Vertex> vertices = new ArrayList<>();
         for(int i=0;i<graph.vertexCount();i++)

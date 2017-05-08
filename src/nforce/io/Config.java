@@ -23,7 +23,6 @@ public class Config {
     public Config(){
         
     }
-    
     /**
      * This is the constructor
      * @param thresh

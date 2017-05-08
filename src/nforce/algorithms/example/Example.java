@@ -49,5 +49,11 @@ public class Example {
         conf.p.setThreshArray(null);
         
         
+        //After setting the config, you can get the programme to run.
+        // The returned value is the result graph.
+        // The cluster output is already written. 
+        //nforce.graphs.NpartiteGraph resGraph = (nforce.graphs.NpartiteGraph)nforce.io.Main.runGraph(conf);
+        
+        
     }
 }

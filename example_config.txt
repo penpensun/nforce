@@ -1,0 +1,9 @@
+#Example config file
+graphType=5
+input=./npartite_sim_graph.txt
+isXmlFormat=true
+clusterOutput=./npartite_sim_cluster_out.txt
+editOutput=./npartite_sim_edit_out.txt
+graphOutput=./npartite_sim_graph_out.txt
+paramFile=./parameters.ini
+threshold=0
