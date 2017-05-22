@@ -5,6 +5,8 @@
  */
 package nforce.graphs;
 
+import nforce.util.XmlInputParser;
+import nforce.util.Action;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -214,6 +216,16 @@ public class HierGraphWIE extends Graph{
          return sub;
     }
     
+    
+    /**
+     * return the setSizes
+     * @return 
+     */
+    public int[] getSetSizes(){
+        return setSizes;
+    }
+    
+
     /**
      * This method returns all connected components.
      * @return 
@@ -410,13 +422,17 @@ public class HierGraphWIE extends Graph{
     }
     
     /**
-     * Get the sizes of sets.
+     * This method returns the inter edge weights.
      * @return 
      */
-    public int[] getSetSizes(){
-        return setSizes;
+    public ArrayList<float[][]> getInterEdgeWeights(){
+        return interEdgeWeights;
     }
-
+    
+    
+    
+    
+  
     @Override
     public boolean isActionTaken(int actIdx) {
         Vertex vtx1 = actions.get(actIdx).getVtx1();

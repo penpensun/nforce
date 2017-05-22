@@ -3,9 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nforce.graphs;
+package nforce.util;
 import java.io.*;
 import java.util.ArrayList;
+import nforce.graphs.BipartiteGraph;
+import nforce.graphs.GeneralGraph;
+import nforce.graphs.HierGraph;
+import nforce.graphs.HierGraphWIE;
+import nforce.graphs.NpartiteGraph;
+import nforce.graphs.Vertex;
 /**
  * This class contains several parsers useful to extract information from xml formatted inputs for
  * graphs. Some parsers are also responsible to assign values to the corresponding variables in the 
@@ -21,7 +27,7 @@ public class XmlInputParser {
      */
     public void parseEntityString(String entityContent, HierGraphWIE inputGraph){
         /* Check if setSizes in the inputGraph has been checked.*/
-        if(inputGraph == null || inputGraph.setSizes == null)
+        if(inputGraph == null || inputGraph.getSetSizes() == null)
             throw new IllegalArgumentException("(biforce.graphs.XmlInputParser.parseEntity) The setSizes array is not initialized in the graph.");
         
         /* First check if the array setSizes is initialized.*/
@@ -29,9 +35,9 @@ public class XmlInputParser {
         String[] contentSplits = entityContent.split("\n");
         /* The length of the contentSplits might be larger than the number of different levels, yet if
         the contentSplits' length is smaller than the number of the levels, then we have to throw an exception.*/
-        if(contentSplits.length<inputGraph.setSizes.length)
+        if(contentSplits.length<inputGraph.getSetSizes().length)
             throw new IllegalStateException("(biforce.graphs.XmlInputParser.parseEntity) The levels in the content of element \"entity\" "+
-                    "is smaller then the length of setSizes. setSizes: "+inputGraph.setSizes.length+"  content:  "+contentSplits.length);
+                    "is smaller then the length of setSizes. setSizes: "+inputGraph.getSetSizes().length+"  content:  "+contentSplits.length);
         /* Create nodes and push into vertices. */
         int setIdx = 0;
         for(int i=0;i<contentSplits.length;i++){
@@ -43,22 +49,22 @@ public class XmlInputParser {
                 continue;
             /* Split the line. */
             String[] lineSplits = line.split("\t");
-            inputGraph.setSizes[setIdx] = lineSplits.length; /* The number of nodes in set i is the length of the splits on line i. */
+            inputGraph.getSetSizes()[setIdx] = lineSplits.length; /* The number of nodes in set i is the length of the splits on line i. */
             for(int j=0;j<lineSplits.length;j++){
                 /* For each split, we create node. */
                 String value = String.copyValueOf(lineSplits[j].toCharArray());
                 Vertex vtx = new Vertex(value,setIdx,j); /* The value of the node is the split. 
                 The level is i. The index is j.*/
                 // Set the dist index of the given node.
-                vtx.setDistIdx(inputGraph.vertices.size()); // A big big bug, fixed on 31.03.2015
-                inputGraph.vertices.add(vtx); /* Push the node into vertices. */
+                vtx.setDistIdx(inputGraph.getVertices().size()); // A big big bug, fixed on 31.03.2015
+                inputGraph.getVertices().add(vtx); /* Push the node into vertices. */
             }
             setIdx++;
         }
         /* Check if all levels are initialized.*/
-        if(setIdx < inputGraph.setSizes.length)
+        if(setIdx < inputGraph.getSetSizes().length)
             throw new IllegalStateException("(biforce.graphs.XmlInputParser.parseEntity) Not enough node sets given by element \"entity\": "+
-                    setIdx+"  length of setSizes:  "+inputGraph.setSizes.length);
+                    setIdx+"  length of setSizes:  "+inputGraph.getSetSizes().length);
     }
     
     /**
@@ -68,7 +74,7 @@ public class XmlInputParser {
      */
     public void parseEntityString(String entityContent, HierGraph inputGraph){
         /* Check if setSizes in the inputGraph has been checked.*/
-        if(inputGraph == null || inputGraph.setSizes == null)
+        if(inputGraph == null || inputGraph.getSetSizes() == null)
             throw new IllegalArgumentException("(biforce.graphs.XmlInputParser.parseEntity) The setSizes array is not initialized in the graph.");
         
         /* First check if the array setSizes is initialized.*/
@@ -76,9 +82,9 @@ public class XmlInputParser {
         String[] contentSplits = entityContent.split("\n");
         /* The length of the contentSplits might be larger than the number of different levels, yet if
         the contentSplits' length is smaller than the number of the levels, then we have to throw an exception.*/
-        if(contentSplits.length<inputGraph.setSizes.length)
+        if(contentSplits.length<inputGraph.getSetSizes().length)
             throw new IllegalStateException("(biforce.graphs.XmlInputParser.parseEntity) The levels in the content of element \"entity\" "+
-                    "is smaller then the length of setSizes. setSizes: "+inputGraph.setSizes.length+"  content:  "+contentSplits.length);
+                    "is smaller then the length of setSizes. setSizes: "+inputGraph.getSetSizes().length+"  content:  "+contentSplits.length);
         /* Create nodes and push into vertices. */
         int setIdx = 0;
         for(int i=0;i<contentSplits.length;i++){
@@ -90,22 +96,22 @@ public class XmlInputParser {
                 continue;
             /* Split the line. */
             String[] lineSplits = line.split("\t");
-            inputGraph.setSizes[setIdx] = lineSplits.length; /* The number of nodes in set i is the length of the splits on line i. */
+            inputGraph.getSetSizes()[setIdx] = lineSplits.length; /* The number of nodes in set i is the length of the splits on line i. */
             for(int j=0;j<lineSplits.length;j++){
                 /* For each split, we create node. */
                 String value = String.copyValueOf(lineSplits[j].toCharArray());
                 Vertex vtx = new Vertex(value,setIdx,j); /* The value of the node is the split. 
                 The level is i. The index is j.*/
                 // Set the dist index of the given node.
-                vtx.setDistIdx(inputGraph.vertices.size()); // A big big bug, fixed on 31.03.2015
-                inputGraph.vertices.add(vtx); /* Push the node into vertices. */
+                vtx.setDistIdx(inputGraph.getVertices().size()); // A big big bug, fixed on 31.03.2015
+                inputGraph.getVertices().add(vtx); /* Push the node into vertices. */
             }
             setIdx++;
         }
         /* Check if all levels are initialized.*/
-        if(setIdx < inputGraph.setSizes.length)
+        if(setIdx < inputGraph.getSetSizes().length)
             throw new IllegalStateException("(biforce.graphs.XmlInputParser.parseEntity) Not enough node sets given by element \"entity\": "+
-                    setIdx+"  length of setSizes:  "+inputGraph.setSizes.length);
+                    setIdx+"  length of setSizes:  "+inputGraph.getSetSizes().length);
     }
     
     /**
@@ -115,7 +121,7 @@ public class XmlInputParser {
      */
     public void parseEntityString(String entityContent, NpartiteGraph inputGraph){
         /* Check if setSizes in the inputGraph has been checked.*/
-        if(inputGraph == null || inputGraph.setSizes == null)
+        if(inputGraph == null || inputGraph.getSetSizes() == null)
             throw new IllegalArgumentException("(biforce.graphs.XmlInputParser.parseEntity) The setSizes array is not initialized in the graph.");
         
         /* First check if the array setSizes is initialized.*/
@@ -123,9 +129,9 @@ public class XmlInputParser {
         String[] contentSplits = entityContent.split("\n");
         /* The length of the contentSplits might be larger than the number of different levels, yet if
         the contentSplits' length is smaller than the number of the levels, then we have to throw an exception.*/
-        if(contentSplits.length<inputGraph.setSizes.length)
+        if(contentSplits.length<inputGraph.getSetSizes().length)
             throw new IllegalStateException("(biforce.graphs.XmlInputParser.parseEntity) The levels in the content of element \"entity\" "+
-                    "is smaller then the length of setSizes. setSizes: "+inputGraph.setSizes.length+"  content:  "+contentSplits.length);
+                    "is smaller then the length of setSizes. setSizes: "+inputGraph.getSetSizes().length+"  content:  "+contentSplits.length);
         /* Create nodes and push into vertices. */
         int setIdx = 0;
         for(int i=0;i<contentSplits.length;i++){
@@ -137,22 +143,22 @@ public class XmlInputParser {
                 continue;
             /* Split the line. */
             String[] lineSplits = line.split("\t");
-            inputGraph.setSizes[setIdx] = lineSplits.length; /* The number of nodes in set i is the length of the splits on line i. */
+            inputGraph.getSetSizes()[setIdx] = lineSplits.length; /* The number of nodes in set i is the length of the splits on line i. */
             for(int j=0;j<lineSplits.length;j++){
                 /* For each split, we create node. */
                 String value = String.copyValueOf(lineSplits[j].toCharArray());
                 Vertex vtx = new Vertex(value,setIdx,j); /* The value of the node is the split. 
                 The level is i. The index is j.*/
                 // Set the dist index of the given node.
-                vtx.setDistIdx(inputGraph.vertices.size()); // A big big bug, fixed on 31.03.2015
-                inputGraph.vertices.add(vtx); /* Push the node into vertices. */
+                vtx.setDistIdx(inputGraph.getVertices().size()); // A big big bug, fixed on 31.03.2015
+                inputGraph.getVertices().add(vtx); /* Push the node into vertices. */
             }
             setIdx++;
         }
         /* Check if all levels are initialized.*/
-        if(setIdx < inputGraph.setSizes.length)
+        if(setIdx < inputGraph.getSetSizes().length)
             throw new IllegalStateException("(biforce.graphs.XmlInputParser.parseEntity) Not enough node sets given by element \"entity\": "+
-                    setIdx+"  length of setSizes:  "+inputGraph.setSizes.length);
+                    setIdx+"  length of setSizes:  "+inputGraph.getSetSizes().length);
     }
     
     
@@ -162,7 +168,8 @@ public class XmlInputParser {
      * @param inputGraph 
      */
     public void parseEntityString(String entityContent, BipartiteGraph inputGraph){
-        inputGraph.vertices = new ArrayList<>();
+        
+        inputGraph.setVertices(new ArrayList<>());
         if(inputGraph == null)
             throw new IllegalArgumentException("The setsizes array is not initialized in the graph.");
          /* First check if the array setSizes is initialized.*/
@@ -185,17 +192,17 @@ public class XmlInputParser {
             /* Split the line. */
             String[] lineSplits = line.split("\t");
             if (i ==0)
-                inputGraph.set0Size = lineSplits.length;
+                inputGraph.setSet0Size(lineSplits.length);
             if(i ==1)
-                inputGraph.set1Size = lineSplits.length;
+                inputGraph.setSet1Size(lineSplits.length);
             for(int j=0;j<lineSplits.length;j++){
                 /* For each split, we create node. */
                 String value = String.copyValueOf(lineSplits[j].toCharArray());
                 Vertex vtx = new Vertex(value,setIdx,j); /* The value of the node is the split. 
                 The level is i. The index is j.*/
                 // Set the dist index of the given node.
-                vtx.setDistIdx(inputGraph.vertices.size()); // A big big bug, fixed on 31.03.2015
-                inputGraph.vertices.add(vtx); /* Push the node into vertices. */
+                vtx.setDistIdx(inputGraph.getVertices().size()); // A big big bug, fixed on 31.03.2015
+                inputGraph.getVertices().add(vtx); /* Push the node into vertices. */
             }
             setIdx++;
         }
@@ -219,7 +226,7 @@ public class XmlInputParser {
         for(int i=0;i<splits.length;i++){
             String value = String.copyValueOf(splits[i].toCharArray());
             Vertex vtx = new Vertex(value,0,i);
-            inputGraph.vertices.add(vtx);
+            inputGraph.getVertices().add(vtx);
         }
         
     }
@@ -242,7 +249,7 @@ public class XmlInputParser {
             return;
         }
         /* Check if setSizes in the inputGraph has been checked.*/
-        if(inputGraph == null || inputGraph.setSizes == null)
+        if(inputGraph == null || inputGraph.getSetSizes() == null)
             throw new IllegalArgumentException("(biforce.graphs.XmlInputParser.parseEntity) The setSizes array is not initialized in the graph.");
         String line = null;
         /* Create nodes and push into vertices. */
@@ -254,15 +261,15 @@ public class XmlInputParser {
                 continue;
             /* Split the line. */
             String[] lineSplits = line.split("\t");
-            inputGraph.setSizes[setIdx] = lineSplits.length; /* The number of nodes in set i is the length of the splits on line i. */
+            inputGraph.getSetSizes()[setIdx] = lineSplits.length; /* The number of nodes in set i is the length of the splits on line i. */
             for(int j=0;j<lineSplits.length;j++){
                 /* For each split, we create node. */
                 String value = String.copyValueOf(lineSplits[j].toCharArray());
                 Vertex vtx = new Vertex(value,setIdx,j); /* The value of the node is the split. 
                 The level is i. The index is j.*/
                 // Set the dist index of the given node.
-                vtx.setDistIdx(inputGraph.vertices.size()); // A big big bug, fixed on 31.03.2015
-                inputGraph.vertices.add(vtx); /* Push the node into vertices. */
+                vtx.setDistIdx(inputGraph.getVertices().size()); // A big big bug, fixed on 31.03.2015
+                inputGraph.getVertices().add(vtx); /* Push the node into vertices. */
             }
             setIdx++;
         }
@@ -271,9 +278,9 @@ public class XmlInputParser {
             return;
         }
         /* Check if all levels are initialized.*/
-        if(setIdx < inputGraph.setSizes.length)
+        if(setIdx < inputGraph.getSetSizes().length)
             throw new IllegalStateException("(biforce.graphs.XmlInputParser.parseEntity) Not enough node sets given by element \"entity\": "+
-                    setIdx+"  length of setSizes:  "+inputGraph.setSizes.length);
+                    setIdx+"  length of setSizes:  "+inputGraph.getSetSizes().length);
     }
    
     /**
@@ -293,7 +300,7 @@ public class XmlInputParser {
             return;
         }
         /* Check if setSizes in the inputGraph has been checked.*/
-        if(inputGraph == null || inputGraph.setSizes == null)
+        if(inputGraph == null || inputGraph.getSetSizes() == null)
             throw new IllegalArgumentException("(biforce.graphs.XmlInputParser.parseEntity) The setSizes array is not initialized in the graph.");
         String line = null;
         /* Create nodes and push into vertices. */
@@ -305,15 +312,15 @@ public class XmlInputParser {
                 continue;
             /* Split the line. */
             String[] lineSplits = line.split("\t");
-            inputGraph.setSizes[setIdx] = lineSplits.length; /* The number of nodes in set i is the length of the splits on line i. */
+            inputGraph.getSetSizes()[setIdx] = lineSplits.length; /* The number of nodes in set i is the length of the splits on line i. */
             for(int j=0;j<lineSplits.length;j++){
                 /* For each split, we create node. */
                 String value = String.copyValueOf(lineSplits[j].toCharArray());
                 Vertex vtx = new Vertex(value,setIdx,j); /* The value of the node is the split. 
                 The level is i. The index is j.*/
                 // Set the dist index of the given node.
-                vtx.setDistIdx(inputGraph.vertices.size()); // A big big bug, fixed on 31.03.2015
-                inputGraph.vertices.add(vtx); /* Push the node into vertices. */
+                vtx.setDistIdx(inputGraph.getVertices().size()); // A big big bug, fixed on 31.03.2015
+                inputGraph.getVertices().add(vtx); /* Push the node into vertices. */
             }
             setIdx++;
         }
@@ -322,9 +329,9 @@ public class XmlInputParser {
             return;
         }
         /* Check if all levels are initialized.*/
-        if(setIdx < inputGraph.setSizes.length)
+        if(setIdx < inputGraph.getSetSizes().length)
             throw new IllegalStateException("(biforce.graphs.XmlInputParser.parseEntity) Not enough node sets given by element \"entity\": "+
-                    setIdx+"  length of setSizes:  "+inputGraph.setSizes.length);
+                    setIdx+"  length of setSizes:  "+inputGraph.getSetSizes().length);
     }
     
     /**
@@ -344,7 +351,7 @@ public class XmlInputParser {
             return;
         }
         /* Check if setSizes in the inputGraph has been checked.*/
-        if(inputGraph == null || inputGraph.setSizes == null)
+        if(inputGraph == null || inputGraph.getSetSizes() == null)
             throw new IllegalArgumentException("(biforce.graphs.XmlInputParser.parseEntity) The setSizes array is not initialized in the graph.");
         String line = null;
         /* Create nodes and push into vertices. */
@@ -356,15 +363,15 @@ public class XmlInputParser {
                 continue;
             /* Split the line. */
             String[] lineSplits = line.split("\t");
-            inputGraph.setSizes[setIdx] = lineSplits.length; /* The number of nodes in set i is the length of the splits on line i. */
+            inputGraph.getSetSizes()[setIdx] = lineSplits.length; /* The number of nodes in set i is the length of the splits on line i. */
             for(int j=0;j<lineSplits.length;j++){
                 /* For each split, we create node. */
                 String value = String.copyValueOf(lineSplits[j].toCharArray());
                 Vertex vtx = new Vertex(value,setIdx,j); /* The value of the node is the split. 
                 The level is i. The index is j.*/
                 // Set the dist index of the given node.
-                vtx.setDistIdx(inputGraph.vertices.size()); // A big big bug, fixed on 31.03.2015
-                inputGraph.vertices.add(vtx); /* Push the node into vertices. */
+                vtx.setDistIdx(inputGraph.getVertices().size()); // A big big bug, fixed on 31.03.2015
+                inputGraph.getVertices().add(vtx); /* Push the node into vertices. */
             }
             setIdx++;
         }
@@ -373,9 +380,9 @@ public class XmlInputParser {
             return;
         }
         /* Check if all levels are initialized.*/
-        if(setIdx < inputGraph.setSizes.length)
+        if(setIdx < inputGraph.getSetSizes().length)
             throw new IllegalStateException("(biforce.graphs.XmlInputParser.parseEntity) Not enough node sets given by element \"entity\": "+
-                    setIdx+"  length of setSizes:  "+inputGraph.setSizes.length);
+                    setIdx+"  length of setSizes:  "+inputGraph.getSetSizes().length);
     }
     
     /**
@@ -409,17 +416,17 @@ public class XmlInputParser {
             /* Split the line. */
             String[] lineSplits = line.split("\t");
             if(i ==0)
-                inputGraph.set0Size = lineSplits.length;/* The number of nodes in set i is the length of the splits on line i. */
+                inputGraph.setSet0Size(lineSplits.length);/* The number of nodes in set i is the length of the splits on line i. */
             if(i == 1)
-                inputGraph.set1Size = lineSplits.length;
+                inputGraph.setSet1Size(lineSplits.length);
             for(int j=0;j<lineSplits.length;j++){
                 /* For each split, we create node. */
                 String value = String.copyValueOf(lineSplits[j].toCharArray());
                 Vertex vtx = new Vertex(value,setIdx,j); /* The value of the node is the split. 
                 The level is i. The index is j.*/
                 // Set the dist index of the given node.
-                vtx.setDistIdx(inputGraph.vertices.size()); // A big big bug, fixed on 31.03.2015
-                inputGraph.vertices.add(vtx); /* Push the node into vertices. */
+                vtx.setDistIdx(inputGraph.getVertices().size()); // A big big bug, fixed on 31.03.2015
+                inputGraph.getVertices().add(vtx); /* Push the node into vertices. */
             }
             setIdx++;
             i++;
@@ -457,7 +464,7 @@ public class XmlInputParser {
         while((line = br.readLine())!= null){
             Vertex vtx = new Vertex(line.trim(), 0,idx);
             idx++;
-            inputGraph.vertices.add(vtx);
+            inputGraph.getVertices().add(vtx);
         }
         }catch(IOException e){
             System.err.println("(XmlInputParser.parseEntityFile) Reading error:  "+inputFile);
@@ -474,7 +481,7 @@ public class XmlInputParser {
     public void parseInterMatrixString(String matrixContent, int matrixLevel1, int matrixLevel2,
             HierGraphWIE inputGraph){
         /* Get the inter matrix in the interEdgeWeights. The index of interMatrix is the min of matrixLevel1 and matrixLevel2. */
-        float[][] interMatrix = inputGraph.interEdgeWeights.get(Math.min(matrixLevel1, matrixLevel2));
+        float[][] interMatrix = inputGraph.getInterEdgeWeights().get(Math.min(matrixLevel1, matrixLevel2));
         /* Split the matrixContent. */
         String[] rowsStr = matrixContent.split("\n");
         for(int i=0;i<rowsStr.length;i++){
@@ -483,12 +490,12 @@ public class XmlInputParser {
             /* Split the row into columns. */
             String[] cols = row.split("\\s+");
             /* Here we check the size of the matrix, see if it matches setSizes. */
-            if(rowsStr.length != inputGraph.setSizes[Math.min(matrixLevel1, matrixLevel2)] || 
-                    cols.length != inputGraph.setSizes[Math.max(matrixLevel1, matrixLevel2)])
+            if(rowsStr.length != inputGraph.getSetSizes()[Math.min(matrixLevel1, matrixLevel2)] || 
+                    cols.length != inputGraph.getSetSizes()[Math.max(matrixLevel1, matrixLevel2)])
                 throw new IllegalArgumentException("(biforce.graphs.XmlInputParser.parseEntity) The size of the inter-matrix does not match setSizes. Index of the set: "
                         +matrixLevel1+","+matrixLevel2
-                        +" setSize of the row:  "+inputGraph.setSizes[Math.min(matrixLevel1, matrixLevel2)]+", row:"+rowsStr.length+
-                        ",setSize of the column:  "+inputGraph.setSizes[Math.max(matrixLevel1, matrixLevel2)]+" cols:"+cols.length);
+                        +" setSize of the row:  "+inputGraph.getSetSizes()[Math.min(matrixLevel1, matrixLevel2)]+", row:"+rowsStr.length+
+                        ",setSize of the column:  "+inputGraph.getSetSizes()[Math.max(matrixLevel1, matrixLevel2)]+" cols:"+cols.length);
             for(int j=0;j<cols.length;j++){
                 /* First check the number format in the matrix. */
                 float value = Float.NaN;
@@ -508,7 +515,7 @@ public class XmlInputParser {
             }
         }
         /* Re-set the inter-matrix. */
-        inputGraph.interEdgeWeights.set(Math.min(matrixLevel1,matrixLevel2), interMatrix);
+        inputGraph.getInterEdgeWeights().set(Math.min(matrixLevel1,matrixLevel2), interMatrix);
     }
     
     /**
@@ -520,7 +527,7 @@ public class XmlInputParser {
      */
     public void parseInterMatrixString(String matrixContent, int matrixLevel1, int matrixLevel2, 
             HierGraph inputGraph){
-        float[][] interMatrix= inputGraph.edgeWeights.get(Math.min(matrixLevel1, matrixLevel2));
+        float[][] interMatrix = inputGraph.getEdgeWeights().get(Math.min(matrixLevel1, matrixLevel2));
         String[] rowsStr = matrixContent.split("\n");
         for(int i=0;i<rowsStr.length;i++){
             String row = rowsStr[i];
@@ -528,12 +535,12 @@ public class XmlInputParser {
             /* Split the row into columns. */
             String[] cols = row.split("\\s+");
             /* Here we check the size of the matrix, see if it matches setSizes. */
-            if(rowsStr.length != inputGraph.setSizes[Math.min(matrixLevel1, matrixLevel2)] || 
-                    cols.length != inputGraph.setSizes[Math.max(matrixLevel1, matrixLevel2)])
+            if(rowsStr.length != inputGraph.getSetSizes()[Math.min(matrixLevel1, matrixLevel2)] || 
+                    cols.length != inputGraph.getSetSizes()[Math.max(matrixLevel1, matrixLevel2)])
                 throw new IllegalArgumentException("(biforce.graphs.XmlInputParser.parseEntity) The size of the inter-matrix does not match setSizes. Index of the set: "
                         +matrixLevel1+","+matrixLevel2
-                        +" setSize of the row:  "+inputGraph.setSizes[Math.min(matrixLevel1, matrixLevel2)]+", row:"+rowsStr.length+
-                        ",setSize of the column:  "+inputGraph.setSizes[Math.max(matrixLevel1, matrixLevel2)]+" cols:"+cols.length);
+                        +" setSize of the row:  "+inputGraph.getSetSizes()[Math.min(matrixLevel1, matrixLevel2)]+", row:"+rowsStr.length+
+                        ",setSize of the column:  "+inputGraph.getSetSizes()[Math.max(matrixLevel1, matrixLevel2)]+" cols:"+cols.length);
             for(int j=0;j<cols.length;j++){
                 /* First check the number format in the matrix. */
                 float value = Float.NaN;
@@ -553,7 +560,7 @@ public class XmlInputParser {
             }
         }
         /* Re-set the inter-matrix. */
-        inputGraph.edgeWeights.set(Math.min(matrixLevel1,matrixLevel2), interMatrix);
+        inputGraph.getEdgeWeights().set(Math.min(matrixLevel1,matrixLevel2), interMatrix);
     }
     
     /**
@@ -567,10 +574,10 @@ public class XmlInputParser {
             NpartiteGraph inputGraph){
         float[][] interMatrix;
         if(matrixLevel1 - matrixLevel2 == 1 || matrixLevel1 - matrixLevel2 == -1)
-            interMatrix= inputGraph.interEdgeWeights.get(Math.min(matrixLevel1, matrixLevel2));
-        else if(matrixLevel1 - matrixLevel2 == inputGraph.setSizes.length-1 ||
-                matrixLevel1 - matrixLevel2 == -inputGraph.setSizes.length+1)
-            interMatrix = inputGraph.interEdgeWeights.get(inputGraph.setSizes.length-1);
+            interMatrix= inputGraph.getInterEdgeWeights().get(Math.min(matrixLevel1, matrixLevel2));
+        else if(matrixLevel1 - matrixLevel2 == inputGraph.getSetSizes().length-1 ||
+                matrixLevel1 - matrixLevel2 == -inputGraph.getSetSizes().length+1)
+            interMatrix = inputGraph.getInterEdgeWeights().get(inputGraph.getSetSizes().length-1);
         else throw new IllegalArgumentException("(XmlInputParser.parseInterMatrixString) Illegal matrix levels:  "+matrixLevel1+"  "+matrixLevel2);
         
         String[] rowsStr = matrixContent.split("\n");
@@ -580,8 +587,8 @@ public class XmlInputParser {
             /* Split the row into columns. */
             String[] cols = row.split("\\s+");
             /* Here we check the size of the matrix, see if it matches setSizes. */
-            if(rowsStr.length != inputGraph.setSizes[Math.min(matrixLevel1, matrixLevel2)] || 
-                    cols.length != inputGraph.setSizes[Math.max(matrixLevel1, matrixLevel2)])
+            if(rowsStr.length != inputGraph.getSetSizes()[Math.min(matrixLevel1, matrixLevel2)] || 
+                    cols.length != inputGraph.getSetSizes()[Math.max(matrixLevel1, matrixLevel2)])
                 throw new IllegalArgumentException("(biforce.graphs.XmlInputParser.parseEntity) The size of the inter-matrix does not match setSizes. Index of the set: "
                         +matrixLevel1+","+matrixLevel2
                         +" setSize of the row:  "+inputGraph.setSizes[Math.min(matrixLevel1, matrixLevel2)]+", row:"+rowsStr.length+

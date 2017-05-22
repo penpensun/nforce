@@ -5,7 +5,7 @@
 package nforce.algorithms;
 import nforce.constants.nForceConstants;
 import nforce.graphs.Graph;
-import nforce.graphs.Action;
+import nforce.util.Action;
 import nforce.graphs.Vertex;
 import nforce.graphs.Cluster;
 import java.util.ArrayList;

@@ -5,6 +5,8 @@
  */
 package nforce.graphs;
 
+import nforce.util.XmlInputParser;
+import nforce.util.Action;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -352,6 +354,19 @@ public class HierGraph extends Graph{
     @Override
     public float getCost() {
         return cost;
+    }
+    
+    
+    public int[] getSetSizes(){
+        return setSizes;
+    }
+    
+    /**
+     * Get the edge weights.
+     * @return 
+     */
+    public ArrayList<float[][]> getEdgeWeights(){
+        return edgeWeights;
     }
 
     @Override

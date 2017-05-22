@@ -5,6 +5,8 @@
  */
 package nforce.graphs;
 
+import nforce.util.XmlInputParser;
+import nforce.util.Action;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -335,6 +337,15 @@ public class BipartiteGraph extends Graph{
     @Override
     public final float getCost() {
         return cost;
+    }
+    
+    
+    public int getSet0Size(){
+        return set0Size;
+    }
+    
+    public int getSet1Size(){
+        return set1Size;
     }
 
     
@@ -960,6 +971,22 @@ public class BipartiteGraph extends Graph{
         }
         else
             edgeWeights[vtx1.getVtxIdx()][vtx2.getVtxIdx()] = edgeWeight;
+    }
+    
+    /**
+     * Set the size of set 0.
+     * @param size 
+     */
+    public void setSet0Size(int size){
+        set0Size = size;
+    }
+    
+    /**
+     * Set the size of set 1.
+     * @param size 
+     */
+    public void setSet1Size(int size){
+        set1Size = size;
     }
 
     /**

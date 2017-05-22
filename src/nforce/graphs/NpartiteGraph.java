@@ -5,6 +5,8 @@
  */
 package nforce.graphs;
 
+import nforce.util.XmlInputParser;
+import nforce.util.Action;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -363,6 +365,22 @@ public class NpartiteGraph extends Graph{
     @Override
     public float getCost() {
         return cost;
+    }
+    
+    /**
+     * Return the intraEdgeWeight.
+     * @return 
+     */
+    public ArrayList<float[][]> getIntraEdgeWeights(){
+        return intraEdgeWeights;
+    }
+    
+    /**
+     * Return the inter edge weights.
+     * @return 
+     */
+    public ArrayList<float[][]> getInterEdgeWeights(){
+        return interEdgeWeights;
     }
     
     /**

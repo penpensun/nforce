@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ExampleRun;
+package nforce.example;
 import nforce.sim.SimGraphGenerator;
 import nforce.algorithms.Param;
 import nforce.io.Config;

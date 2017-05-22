@@ -3,11 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/Users/penpen926/work/projects/nForce/nforce/src/nforce/graphs/HierGraphWIE.java</file>
+            <file>file:/Users/penpen926/work/projects/nForce/nforce/src/nforce/graphs/BipartiteGraph.java</file>
             <file>file:/Users/penpen926/work/projects/nForce/nforce/src/nforce/algorithms/nForceOnGraph.java</file>
-            <file>file:/Users/penpen926/work/projects/nForce/nforce/src/ExampleRun/ExampleRun.java</file>
+            <file>file:/Users/penpen926/work/projects/nForce/nforce/src/nforce/example/ExampleRun.java</file>
+            <file>file:/Users/penpen926/work/projects/nForce/nforce/src/nforce/graphs/HierGraph.java</file>
             <file>file:/Users/penpen926/work/projects/nForce/nforce/src/nforce/io/MatrixMain.java</file>
+            <file>file:/Users/penpen926/work/projects/nForce/nforce/src/nforce/graphs/NpartiteGraph.java</file>
             <file>file:/Users/penpen926/work/projects/nForce/nforce/src/nforce/io/GraphMain.java</file>
+            <file>file:/Users/penpen926/work/projects/nForce/nforce/src/nforce/graphs/Graph.java</file>
             <file>file:/Users/penpen926/work/projects/nForce/nforce/src/nforce/algorithms/example/Example.java</file>
+            <file>file:/Users/penpen926/work/projects/nForce/nforce/src/nforce/util/XmlInputParser.java</file>
             <file>file:/Users/penpen926/work/projects/nForce/nforce/src/nforce/io/Main.java</file>
         </group>
     </open-files>
